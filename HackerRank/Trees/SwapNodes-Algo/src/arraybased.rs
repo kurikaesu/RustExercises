@@ -5,6 +5,32 @@ fn traverse(v: &mut Vec<i32>, left: &Vec<i32>, right: &Vec<i32>, node: i32) {
     }
     let n = node as usize;
 
+    /*
+        When traversing the tree, we are using the current node's value
+        as the index of the array that we need to look at.
+
+        Consider the tree:
+
+                           1
+                  2             3
+               4    5        6    7  
+            -1 -1 -1 -1   -1 -1 -1 -1
+
+        If node == 1 then the below left_node = 2, right_node = 3
+        Array indexes are as follows:
+                                       null
+                            left[1]           right[1]
+            left[2]         right[2]         left[3]         right[3]
+        left[4] right[4] left[5] right[5] left[6] right[6] left[7] right[7]
+
+        We start at left[1] right[1] as 1 (node) was provided by the initial
+        traverse(v, left, right, 1)
+
+        left[1] contains 2 so we recurse and take left[2] and right[2]
+        left[2] contains 4 so we recurse and take left[4] and right[4]
+        right[2] contains 5 so we take left[5] and right[5]
+        and so forth doing an in-order traversal
+    */
     traverse(v, &left, &right, left[n]);
     v.push(node);
     traverse(v, &left, &right, right[n]);
@@ -22,7 +48,7 @@ fn swap(left: &mut Vec<i32>, right: &mut Vec<i32>, q: i32, node: i32) {
     // If the current q (K) is a multiple of node then swap
     // This works because we have 0 in both left[0] and left[1]
     // as padding for both arrays which alleviates having to
-    // perform left[n - 1] right[n - 1] tedius operations
+    // perform left[n - 1] right[n - 1] tedious operations
     if q % node == 0 {
         let t = left[n];
         left[n] = right[n];
@@ -51,7 +77,7 @@ fn swap(left: &mut Vec<i32>, right: &mut Vec<i32>, q: i32, node: i32) {
         This then allows the actual swap above to swap according to left[2] and right[2]
         illustrated in the above crude tree.
 
-        The same is then performed for the right_node = 2 == left[3] and right[3]
+        The same is then performed for the right_node = 3 == left[3] and right[3]
 
         Effectively doing a breadth-first search without having to construct
         classes/structs with pointers betwen them
