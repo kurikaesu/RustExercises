@@ -1,8 +1,9 @@
 use std::io;
-use std::str;
 
-fn swap_nodes(indexes : Vec<Vec<i32>>, queries : Vec<i32>) {
+mod arraybased;
 
+fn swap_nodes(indexes : Vec<Vec<i32>>, queries : Vec<i32>) -> Vec<Vec<i32>> {
+    return arraybased::swap_nodes(indexes, queries);
 }
 
 fn main() {
@@ -16,6 +17,7 @@ fn main() {
 
     let mut indexes : Vec<Vec<i32>> = Vec::new();
     for _c in 1..=n {
+        cmd.clear();
         io::stdin().read_line(&mut cmd)
             .expect("Failed to read line");
 
@@ -27,6 +29,7 @@ fn main() {
         indexes.push(pairs);
     }
 
+    cmd.clear();
     io::stdin().read_line(&mut cmd)
         .expect("Failed to read line");
 
@@ -35,6 +38,7 @@ fn main() {
     
     let mut queries : Vec<i32> = Vec::new();
     for _c in 1..=n {
+        cmd.clear();
         io::stdin().read_line(&mut cmd)
             .expect("Failed to read line");
 
@@ -44,5 +48,8 @@ fn main() {
         queries.push(num);
     }
 
-    swap_nodes(indexes, queries);
+    let result = swap_nodes(indexes, queries);
+    for row in result {
+        println!("{:?}", row);
+    }
 }
