@@ -1,13 +1,26 @@
 use std::io;
+use std::env;
 
 mod arraybased;
-// mod stackbased; // Currently not compiling
+mod stackbased; // Currently not compiling
 
-fn swap_nodes(indexes : Vec<Vec<i32>>, queries : Vec<i32>) -> Vec<Vec<i32>> {
+fn swap_nodes(algo: String, indexes : Vec<Vec<i32>>, queries : Vec<i32>) -> Vec<Vec<i32>> {
+    if algo == "stack" {
+        return stackbased::swap_nodes(indexes, queries);
+    }
+
     return arraybased::swap_nodes(indexes, queries);
+
 }
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    let mut algo = "array";
+    if args.len() == 2 {
+        algo = &args[1];
+    }
+
     let mut cmd = String::new();
 
     io::stdin().read_line(&mut cmd)
@@ -49,7 +62,7 @@ fn main() {
         queries.push(num);
     }
 
-    let result = swap_nodes(indexes, queries);
+    let result = swap_nodes(algo.to_string(), indexes, queries);
     for row in result {
         println!("{:?}", row);
     }
